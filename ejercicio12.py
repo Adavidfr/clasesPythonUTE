@@ -49,10 +49,8 @@ def main():
 
     print("Bienvenido a Tiendas Micka.\nDisponemos de 3 tiendas:\n1. Tienda Norte\n2. Tienda Cetntro\n3. Tienda Sur\n\nA continuación se desplegará el menú, escoge una opción dentro del menú:")
     
-
     while True:
         
-
         print("\n1. Agregar producto")
         print("2. Buscar producto")
         print("3. Actualizar stock")
