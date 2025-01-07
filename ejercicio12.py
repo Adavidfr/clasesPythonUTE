@@ -1,95 +1,105 @@
-class Tienda:
-    def __init__(self, nombre):
-        self.nombre = nombre
-        self.productos = {}
+# Inventario inicial para dos tiendas y una bodega
+inventario = {
+    "iPhone 16": {"Tienda A": 15, "Tienda B": 10, "Bodega": 30},
+    "Samsung Galaxy S22": {"Tienda A": 20, "Tienda B": 15, "Bodega": 40},
+    "Xiaomi Redmi Note 13": {"Tienda A": 25, "Tienda B": 20, "Bodega": 50}
+}
 
-    def agregarProducto(self, producto, cantidad):
-        if producto in self.productos:
-            self.productos[producto] += cantidad
-        else:
-            self.productos[producto] = cantidad
+# Función para mostrar el inventario
+def mostrarInventario():
+    print("\nInventario actual:")
+    for producto, stock in inventario.items():
+        print(f"{producto}:")
+        for ubicacion, cantidad in stock.items():
+            print(f"  {ubicacion}: {cantidad} unidades")
+    print()
 
-    def buscarProducto(self, producto):
-        if producto in self.productos:
-            return f"{producto} está disponible en {self.nombre} con {self.productos[producto]} unidades."
-        else:
-            return f"{producto} no está disponible en {self.nombre}."
+# Función para agregar un nuevo producto
+def agregarProducto():
+    producto = input("Ingresa el nombre del nuevo producto: ")
+    if producto in inventario:
+        print("El producto ya existe en el inventario.")
+        return
+    stockA = int(input("Ingresa el stock inicial para Tienda A: "))
+    stockB = int(input("Ingresa el stock inicial para Tienda B: "))
+    stockBodega = int(input("Ingresa el stock inicial para Bodega: "))
+    inventario[producto] = {"Tienda A": stockA, "Tienda B": stockB, "Bodega": stockBodega}
+    print(f"Producto '{producto}' agregado con éxito.")
 
-    def actualizarStock(self, producto, cantidad):
-        if producto in self.productos:
-            self.productos[producto] += cantidad
-            if self.productos[producto] < 0:
-                self.productos[producto] = 0
-        else:
-            self.productos[producto] = cantidad
-
-    def mostrarStock(self):
-        stock = f"Stock de {self.nombre}:\n"
-        for producto, cantidad in self.productos.items():
-            stock += f"{producto}: {cantidad} unidades\n"
-        return stock
-
-def main():
-    tiendas = [
-        Tienda("Tienda Norte"),
-        Tienda("Tienda Centro"),
-        Tienda("Tienda Sur")
-    ]
-
-    # Agregar productos de ejemplo
-    productosEjemplo = [
-        ("iPhone 12", 10),
-        ("Samsung Galaxy S21", 15),
-        ("Xiaomi Mi 11", 20)
-    ]
-
-    for tienda in tiendas:
-        for producto, cantidad in productosEjemplo:
-            tienda.agregarProducto(producto, cantidad)
-
-    print("Bienvenido a Tiendas Micka.\nDisponemos de 3 tiendas:\n1. Tienda Norte\n2. Tienda Cetntro\n3. Tienda Sur\n\nA continuación se desplegará el menú, escoge una opción dentro del menú:")
+# Función para registrar una venta
+def registrarVenta():
+    producto = input("Ingresa el nombre del producto que deseas vender: ")
+    if producto not in inventario:
+        print("Error: El producto no existe en el inventario.")
+        return
     
+    tienda = input("Selecciona la tienda desde donde deseas vender (Tienda A / Tienda B): ")
+    if tienda not in ["Tienda A", "Tienda B"]:
+        print("Error: Tienda no válida.")
+        return
+    
+    cantidad = int(input(f"Ingresa la cantidad de '{producto}' que deseas vender desde {tienda}: "))
+    
+    if inventario[producto][tienda] >= cantidad:
+        # Hay suficiente stock en la tienda seleccionada
+        inventario[producto][tienda] -= cantidad
+        print(f"Venta registrada: {cantidad} unidades de '{producto}' vendidas desde {tienda}.")
+    else:
+        # Stock insuficiente en la tienda, se descuenta de la bodega
+        faltante = cantidad - inventario[producto][tienda]
+        if inventario[producto]["Bodega"] >= faltante:
+            print(f"Stock insuficiente en {tienda}. Se tomarán {faltante} unidades de la bodega.")
+            inventario[producto][tienda] = 0
+            inventario[producto]["Bodega"] -= faltante
+            print(f"Venta registrada: {cantidad} unidades de '{producto}' vendidas desde {tienda}.")
+        else:
+            print("Error: No hay suficiente stock total (incluyendo bodega) para realizar la venta.")
+    
+    mostrarInventario()
+
+# Función para ingresar stock a un producto
+def ingresarStock():
+    producto = input("Ingresa el nombre del producto al que deseas agregar stock: ")
+    if producto not in inventario:
+        print("Error: El producto no existe en el inventario.")
+        return
+    
+    ubicacion = input("Selecciona la ubicación donde deseas agregar stock (Tienda A / Tienda B / Bodega): ")
+    if ubicacion not in ["Tienda A", "Tienda B", "Bodega"]:
+        print("Error: Ubicación no válida.")
+        return
+    
+    cantidad = int(input(f"Ingresa la cantidad de '{producto}' que deseas agregar a {ubicacion}: "))
+    inventario[producto][ubicacion] += cantidad
+    print(f"Se han agregado {cantidad} unidades de '{producto}' a {ubicacion}.")
+    
+    mostrarInventario()
+
+# Menú principal
+def menu():
     while True:
-        
-        print("\n1. Agregar producto")
-        print("2. Buscar producto")
-        print("3. Actualizar stock")
-        print("4. Mostrar stock de todas las tiendas")
+        print("Bienvenido al Sistema de Tiendas Micka.\nEscoge una opción dentro del menú:") 
+        print("\n--- Menú de Inventario ---")
+        print("1. Mostrar inventario")
+        print("2. Agregar nuevo producto")
+        print("3. Registrar venta")
+        print("4. Ingresar stock a un producto")
         print("5. Salir")
-        opcion = input("Seleccione una opción: ")
-
+        
+        opcion = input("Selecciona una opción: ")
         if opcion == "1":
-            tiendaNum = int(input("Ingrese el número de la tienda: ")) - 1
-            if 0 <= tiendaNum < len(tiendas):
-                producto = input("Ingrese el nombre del producto: ")
-                cantidad = int(input("Ingrese la cantidad: "))
-                tiendas[tiendaNum].agregarProducto(producto, cantidad)
-            else:
-                print("Número de tienda no válido.")
-
+            mostrarInventario()
         elif opcion == "2":
-            producto = input("Ingrese el nombre del producto a buscar: ")
-            for tienda in tiendas:
-                print(tienda.buscarProducto(producto))
-
+            agregarProducto()
         elif opcion == "3":
-            tiendaNum = int(input("Ingrese el número de la tienda: ")) - 1
-            if 0 <= tiendaNum < len(tiendas):
-                producto = input("Ingrese el nombre del producto: ")
-                cantidad = int(input("Ingrese la cantidad a actualizar (puede ser negativa): "))
-                tiendas[tiendaNum].actualizarStock(producto, cantidad)
-            else:
-                print("Número de tienda no válido.")
-
+            registrarVenta()
         elif opcion == "4":
-            for tienda in tiendas:
-                print(tienda.mostrarStock())
-
+            ingresarStock()
         elif opcion == "5":
-            print("Gracias por usar el sistema de Tiendas Micka.")
+            print("Saliendo del sistema...")
             break
-
         else:
             print("Opción no válida. Intenta de nuevo.")
 
-main()
+# Ejecutar el menú
+menu()
