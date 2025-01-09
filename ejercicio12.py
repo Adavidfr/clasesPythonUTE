@@ -5,14 +5,20 @@ inventario = {
     "Xiaomi Redmi Note 13": {"Tienda A": 25, "Tienda B": 20, "Bodega": 50}
 }
 
-# Función para mostrar el inventario
+# Función para mostrar el inventario con un cuadro decorativo
 def mostrarInventario():
-    print("\nInventario actual:")
+    print("\n" + "=" * 40)
+    print("         INVENTARIO ACTUAL         ")
+    print("=" * 40)
+    
     for producto, stock in inventario.items():
-        print(f"{producto}:")
+        print(f"\n{producto.center(38)}")
+        print("-" * 40)
         for ubicacion, cantidad in stock.items():
-            print(f"  {ubicacion}: {cantidad} unidades")
-    print()
+            print(f"| {ubicacion.ljust(10)} | {str(cantidad).rjust(5)} unidades |")
+        print("-" * 40)
+    
+    print("=" * 40 + "\n")
 
 # Función para agregar un nuevo producto
 def agregarProducto():
@@ -33,19 +39,17 @@ def registrarVenta():
         print("Error: El producto no existe en el inventario.")
         return
     
-    tienda = input("Selecciona la tienda desde donde deseas vender (Tienda A / Tienda B): ")
-    if tienda not in ["Tienda A", "Tienda B"]:
+    tienda = input("Selecciona la tienda desde donde deseas vender (Tienda A / Tienda B): ").strip().lower()
+    if tienda not in ["tienda a", "tienda b"]:
         print("Error: Tienda no válida.")
         return
     
     cantidad = int(input(f"Ingresa la cantidad de '{producto}' que deseas vender desde {tienda}: "))
     
     if inventario[producto][tienda] >= cantidad:
-        # Hay suficiente stock en la tienda seleccionada
         inventario[producto][tienda] -= cantidad
         print(f"Venta registrada: {cantidad} unidades de '{producto}' vendidas desde {tienda}.")
     else:
-        # Stock insuficiente en la tienda, se descuenta de la bodega
         faltante = cantidad - inventario[producto][tienda]
         if inventario[producto]["Bodega"] >= faltante:
             print(f"Stock insuficiente en {tienda}. Se tomarán {faltante} unidades de la bodega.")
@@ -78,13 +82,16 @@ def ingresarStock():
 # Menú principal
 def menu():
     while True:
-        print("Bienvenido al Sistema de Tiendas Micka.\nEscoge una opción dentro del menú:") 
-        print("\n--- Menú de Inventario ---")
-        print("1. Mostrar inventario")
-        print("2. Agregar nuevo producto")
-        print("3. Registrar venta")
-        print("4. Ingresar stock a un producto")
-        print("5. Salir")
+        print("\n" + "=" * 50)
+        print("|     BIENVENIDO AL SISTEMA DE TIENDAS MIKA      |")
+        print("=" * 50)  
+        print("|             --- Menú de Inventario ---         |")
+        print("|  1. Mostrar inventario                         |")
+        print("|  2. Agregar nuevo producto                     |")
+        print("|  3. Registrar venta                            |")
+        print("|  4. Ingresar stock a un producto               |")
+        print("|  5. Salir                                      |")
+        print("=" * 50)
         
         opcion = input("Selecciona una opción: ")
         if opcion == "1":
