@@ -48,22 +48,22 @@ def transponer_matriz(A):
     return resultado
 
 
-# # Ejemplo de uso
-# A = [[1, 2], [3, 4]]
-# B = [[5, 6], [7, 8]]
+# Ejemplo de uso
+A = [[1, 2], [3, 4]]
+B = [[1, 0], [0, 1]]
 
-# Matrices 3x3 de ejemplo
-A = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
+# # Matrices 3x3 de ejemplo
+# A = [
+#     [1, 2, 3],
+#     [4, 5, 6],
+#     [7, 8, 9]
+# ]
 
-B = [
-    [9, 8, 7],
-    [6, 5, 4],
-    [3, 2, 1]
-]
+# B = [
+#     [9, 8, 7],
+#     [6, 5, 4],
+#     [3, 2, 1]
+# ]
 
 print("Suma de matrices:")
 print(sumar_matrices(A, B))
