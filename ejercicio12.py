@@ -39,7 +39,7 @@ def registrarVenta():
         print("Error: El producto no existe en el inventario.")
         return
     
-    tienda = input("Selecciona la tienda desde donde deseas vender (Tienda A / Tienda B): ").strip().lower()
+    tienda = input("Selecciona la tienda desde donde deseas vender (Tienda A / Tienda B): ")
     if tienda not in ["tienda a", "tienda b"]:
         print("Error: Tienda no válida.")
         return
