@@ -40,7 +40,7 @@ def registrarVenta():
         return
     
     tienda = input("Selecciona la tienda desde donde deseas vender (Tienda A / Tienda B): ")
-    if tienda not in ["tienda a", "tienda b"]:
+    if tienda not in ["Tienda A", "Tienda B"]:
         print("Error: Tienda no válida.")
         return
     
